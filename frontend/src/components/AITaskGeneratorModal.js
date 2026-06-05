@@ -37,7 +37,7 @@ const AITaskGeneratorModal = ({ onClose, onCreated, defaultProjectId = '' }) => 
       }
     };
     fetchData();
-  }, []);
+  }, [defaultProjectId, projectId]);
 
   const handleGenerate = async (e) => {
     e.preventDefault();

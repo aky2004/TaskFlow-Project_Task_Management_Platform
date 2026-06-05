@@ -7,15 +7,8 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   ArrowLeftIcon,
-
   XMarkIcon,
-  CalendarDaysIcon,
-  ClockIcon,
-  CheckCircleIcon,
   ExclamationTriangleIcon,
-  ArrowPathIcon,
-  FlagIcon,
-  SparklesIcon,
   BellIcon,
   ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline';
@@ -41,13 +34,11 @@ const statusConfig = {
 const CalendarView = ({ projectId, isEmbedded }) => {
   const { user, logout } = useAuth();
   const { theme } = useTheme();
-  const navigate = useNavigate();
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
   const [showNotifications, setShowNotifications] = useState(false);

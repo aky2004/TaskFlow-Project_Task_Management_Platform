@@ -997,10 +997,10 @@ const LandingPage = () => {
             <div className="lp-footer-col">
               <h4>Resources</h4>
               <ul>
-                <li><a href="#">Documentation</a></li>
-                <li><a href="#">API Reference</a></li>
-                <li><a href="#">Changelog</a></li>
-                <li><a href="#">Blog</a></li>
+                <li><button className="hover:text-indigo-400">Documentation</button></li>
+                <li><button className="hover:text-indigo-400">API Reference</button></li>
+                <li><button className="hover:text-indigo-400">Changelog</button></li>
+                <li><button className="hover:text-indigo-400">Blog</button></li>
               </ul>
             </div>
 
@@ -1008,10 +1008,10 @@ const LandingPage = () => {
             <div className="lp-footer-col">
               <h4>Company</h4>
               <ul>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#">Partners</a></li>
+                <li><button className="hover:text-indigo-400" style={{background: 'none', border: 'none', cursor: 'pointer', color: 'inherit'}}>About</button></li>
+                <li><button className="hover:text-indigo-400" style={{background: 'none', border: 'none', cursor: 'pointer', color: 'inherit'}}>Careers</button></li>
+                <li><button className="hover:text-indigo-400" style={{background: 'none', border: 'none', cursor: 'pointer', color: 'inherit'}}>Contact</button></li>
+                <li><button className="hover:text-indigo-400" style={{background: 'none', border: 'none', cursor: 'pointer', color: 'inherit'}}>Partners</button></li>
               </ul>
             </div>
 
@@ -1019,10 +1019,10 @@ const LandingPage = () => {
             <div className="lp-footer-col">
               <h4>Legal</h4>
               <ul>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Cookie Policy</a></li>
-                <li><a href="#">GDPR</a></li>
+                <li><button className="hover:text-indigo-400" style={{background: 'none', border: 'none', cursor: 'pointer', color: 'inherit'}}>Privacy Policy</button></li>
+                <li><button className="hover:text-indigo-400" style={{background: 'none', border: 'none', cursor: 'pointer', color: 'inherit'}}>Terms of Service</button></li>
+                <li><button className="hover:text-indigo-400" style={{background: 'none', border: 'none', cursor: 'pointer', color: 'inherit'}}>Cookie Policy</button></li>
+                <li><button className="hover:text-indigo-400" style={{background: 'none', border: 'none', cursor: 'pointer', color: 'inherit'}}>GDPR</button></li>
               </ul>
             </div>
           </div>

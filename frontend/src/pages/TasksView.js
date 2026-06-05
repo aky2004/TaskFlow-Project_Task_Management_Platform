@@ -64,7 +64,7 @@ const PRIORITY_ORDER = { urgent: 4, high: 3, medium: 2, low: 1 };
 
 const TasksView = ({ projectId, isEmbedded }) => {
   const { user, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -271,7 +271,6 @@ const TasksView = ({ projectId, isEmbedded }) => {
   // === RENDER HELPERS ===
   const TaskRow = ({ task }) => {
     const priorityColor = getPriorityColor(task.priority);
-    const assignName = task.assignees && task.assignees.length > 0 ? task.assignees[0].name : 'U';
 
     return (
       <div 
@@ -325,7 +324,6 @@ const TasksView = ({ projectId, isEmbedded }) => {
         <div className="space-y-3 overflow-y-auto max-h-[75vh] custom-scrollbar pr-1 pb-2">
           {colTasks.map(task => {
             const priorityColor = getPriorityColor(task.priority);
-            const assignName = task.assignees && task.assignees.length > 0 ? task.assignees[0].name : 'U';
             const tempTag = task.tags && task.tags.length > 0 ? task.tags[0] : (status.value === 'in-progress' ? 'Frontend' : (status.value === 'review' ? 'Backend' : 'Docs'));
             const isCompleted = status.value === 'completed';
 
@@ -917,7 +915,6 @@ const TasksView = ({ projectId, isEmbedded }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {processedTasks.map(task => {
               const galleryColors = getGalleryColors(task.title);
-              const assignName = task.assignees && task.assignees.length > 0 ? task.assignees[0].name : 'U';
 
               return (
                 <div key={task._id} onClick={() => setSelectedTask(task)}

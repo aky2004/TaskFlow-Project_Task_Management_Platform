@@ -77,7 +77,7 @@ export const SocketProvider = ({ children }) => {
         setConnected(false);
       }
     }
-  }, [user]);
+  }, [user, socket]);
 
   const joinProject = useCallback((projectId) => {
     activeProjectRef.current = projectId;

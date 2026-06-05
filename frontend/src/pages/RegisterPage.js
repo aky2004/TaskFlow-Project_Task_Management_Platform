@@ -361,8 +361,8 @@ const RegisterPage = () => {
 
               <p style={{ fontSize: 11, color: '#828383', textAlign: 'center', marginTop: 14 }}>
                 By creating an account, you agree to our{' '}
-                <a href="#" style={{ fontWeight: 600, color: '#6366F1', textDecoration: 'none' }}>Terms</a> and{' '}
-                <a href="#" style={{ fontWeight: 600, color: '#6366F1', textDecoration: 'none' }}>Privacy Policy</a>
+                <button style={{ fontWeight: 600, color: '#6366F1', textDecoration: 'none', background: 'none', border: 'none', cursor: 'pointer' }}>Terms</button> and{' '}
+                <button style={{ fontWeight: 600, color: '#6366F1', textDecoration: 'none', background: 'none', border: 'none', cursor: 'pointer' }}>Privacy Policy</button>
               </p>
             </form>
 

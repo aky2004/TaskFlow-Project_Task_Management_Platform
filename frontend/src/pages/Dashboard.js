@@ -11,34 +11,19 @@ import { projectAPI, taskAPI, workspaceAPI, messageAPI, platformUsageAPI } from 
 import {
   PlusIcon,
   FolderIcon,
-  ClockIcon,
-  CheckCircleIcon,
-
   ArrowRightOnRectangleIcon,
   CalendarDaysIcon,
   ChartBarIcon,
-  ArrowTrendingUpIcon,
-  RocketLaunchIcon,
-  SparklesIcon,
   ChevronRightIcon,
   BellIcon,
   Squares2X2Icon,
   MagnifyingGlassIcon,
   XMarkIcon,
-  EllipsisHorizontalIcon,
-  TrashIcon,
-  PencilSquareIcon,
   TableCellsIcon,
-  FireIcon,
   UserGroupIcon,
   DocumentTextIcon,
-  LightBulbIcon,
-  WrenchScrewdriverIcon,
-  VideoCameraIcon,
-  MicrophoneIcon,
   ChatBubbleLeftRightIcon,
   PaperAirplaneIcon,
-  FaceSmileIcon,
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import { SiReact, SiTailwindcss, SiNodedotjs, SiExpress, SiMongodb, SiSocketdotio } from 'react-icons/si';
@@ -58,7 +43,6 @@ const motivationalQuotes = [
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
-  const { theme } = useTheme();
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [allTasks, setAllTasks] = useState([]);
@@ -159,9 +143,7 @@ const Dashboard = () => {
 
   // Custom Widgets State
   const [chatInput, setChatInput] = useState('');
-  const [chatMessages, setChatMessages] = useState([]);
   const [timerSeconds, setTimerSeconds] = useState(1210); // 20:10 tracker
-  const [aiSuggestions, setAiSuggestions] = useState([]);
   const [quoteIdx, setQuoteIdx] = useState(0);
 
   // Initialize quote based on date so it shifts daily, but can also be shuffled
@@ -170,7 +152,7 @@ const Dashboard = () => {
     setQuoteIdx(day % motivationalQuotes.length);
   }, []);
 
-  const shuffleQuote = () => {
+  const getNextQuote = () => {
     let nextIdx = quoteIdx;
     while (nextIdx === quoteIdx && motivationalQuotes.length > 1) {
       nextIdx = Math.floor(Math.random() * motivationalQuotes.length);
@@ -179,7 +161,7 @@ const Dashboard = () => {
     toast.success("New inspiration loaded!", { icon: "✨" });
   };
 
-  const copyQuote = () => {
+  const getQuoteForDisplay = () => {
     const quote = `"${motivationalQuotes[quoteIdx].text}" — ${motivationalQuotes[quoteIdx].author}`;
     navigator.clipboard.writeText(quote);
     toast.success("Quote copied to clipboard!");
@@ -628,7 +610,7 @@ const Dashboard = () => {
   };
 
   // Render a task card for kanban columns
-  const renderTaskCard = (task) => {
+  const getTaskCard = (task) => {
     const totalCheck = task.checklist?.length || 0;
     const completedCheck = task.checklist?.filter(c => c.completed).length || 0;
     

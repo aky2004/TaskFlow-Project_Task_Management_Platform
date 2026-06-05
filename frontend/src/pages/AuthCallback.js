@@ -7,7 +7,6 @@ import toast from 'react-hot-toast';
 const AuthCallback = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth(); // We might use context methods if available
 
   useEffect(() => {
     const handleCallback = async () => {

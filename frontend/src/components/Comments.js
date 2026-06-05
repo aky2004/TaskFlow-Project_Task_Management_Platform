@@ -7,8 +7,7 @@ import { getAvatarUrl } from '../utils/avatar';
 import { 
   PaperAirplaneIcon, 
   TrashIcon, 
-  UserCircleIcon,
-  FaceSmileIcon
+  UserCircleIcon
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 
@@ -27,8 +26,8 @@ const Comments = ({ taskId, projectId }) => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const res = await commentAPI.getComments(taskId);
-        setComments(res.data.comments);
+        const response = await commentAPI.getComments(taskId);
+        setComments(response.data.comments);
         setTimeout(scrollToBottom, 100);
       } catch (error) {
         console.error('Failed to fetch comments', error);
@@ -55,7 +54,7 @@ const Comments = ({ taskId, projectId }) => {
 
     setLoading(true);
     try {
-      const res = await commentAPI.createComment({
+      await commentAPI.createComment({
         content: newComment,
         taskId,
         projectId

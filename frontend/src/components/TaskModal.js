@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
@@ -7,10 +7,8 @@ import { useDropzone } from 'react-dropzone';
 import { taskAPI, projectAPI, aiAPI } from '../services/api'; // Ensure projectAPI is imported to fetch members
 import { useAuth } from '../context/AuthContext';
 import {
-  XMarkIcon, CalendarDaysIcon, ClockIcon, UserIcon,
-  TagIcon, PaperClipIcon, CheckCircleIcon, TrashIcon,
-  PlayIcon, PauseIcon, PlusIcon, FlagIcon,
-  ListBulletIcon, ArrowPathIcon, ChatBubbleLeftRightIcon, SparklesIcon
+  XMarkIcon, CalendarDaysIcon, PaperClipIcon, CheckCircleIcon, TrashIcon,
+  PlayIcon, PauseIcon, ListBulletIcon, ArrowPathIcon, SparklesIcon
 } from '@heroicons/react/24/outline';
 import { useSocket } from '../context/SocketContext';
 import Comments from './Comments';

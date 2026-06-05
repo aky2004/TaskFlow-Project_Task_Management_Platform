@@ -37,7 +37,7 @@ const CreateTaskModal = ({ onClose, onCreated, defaultProjectId = '', defaultSta
       }
     };
     fetchProjects();
-  }, []);
+  }, [form.project]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

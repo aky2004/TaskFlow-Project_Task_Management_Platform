@@ -16,8 +16,6 @@ import {
 } from '@heroicons/react/24/outline';
 
 const Documentation = () => {
-  const { user } = useAuth();
-  const { theme } = useTheme();
   const [documents, setDocuments] = useState([]);
   const [projects, setProjects] = useState([]);
   const [activeProject, setActiveProject] = useState('');

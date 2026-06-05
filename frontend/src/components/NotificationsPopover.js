@@ -8,7 +8,6 @@ const NotificationsPopover = ({ onClose }) => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
     const popoverRef = useRef(null);
-    const { user } = useAuth();
 
     useEffect(() => {
         loadNotifications();
@@ -20,7 +19,7 @@ const NotificationsPopover = ({ onClose }) => {
         }
         document.addEventListener('mousedown', handleClick);
         return () => document.removeEventListener('mousedown', handleClick);
-    }, []);
+    }, [onClose]);
 
     const loadNotifications = async () => {
         try {

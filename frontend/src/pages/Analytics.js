@@ -144,7 +144,6 @@ const ProgressRing = ({ value, max, size = 100, color = '#3B82F6', label }) => {
 const Analytics = ({ projectId, isEmbedded }) => {
   const { user, logout } = useAuth();
   const { theme } = useTheme();
-  const navigate = useNavigate();
 
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);

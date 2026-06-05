@@ -11,7 +11,6 @@ import {
 } from '@heroicons/react/24/outline';
 
 const TemplateGallery = () => {
-  const { theme } = useTheme();
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
 

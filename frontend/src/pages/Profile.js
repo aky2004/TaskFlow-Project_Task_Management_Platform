@@ -6,7 +6,7 @@ import NotificationsPopover from '../components/NotificationsPopover';
 import { getAvatarUrl } from '../utils/avatar';
 import {
   SparklesIcon, BellIcon, ArrowRightOnRectangleIcon, ArrowLeftIcon,
-  CameraIcon, CheckCircleIcon, UserIcon, ShieldCheckIcon, Cog6ToothIcon, KeyIcon, EnvelopeIcon, UserGroupIcon, LockClosedIcon, 
+  CheckCircleIcon, UserIcon, ShieldCheckIcon, Cog6ToothIcon, KeyIcon, EnvelopeIcon, UserGroupIcon, LockClosedIcon, 
   DocumentTextIcon, ChartBarIcon, PhotoIcon
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';

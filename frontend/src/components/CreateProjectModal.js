@@ -48,7 +48,7 @@ const CreateProjectModal = ({ onClose, onCreated, defaultWorkspaceId = '' }) => 
       }
     };
     fetchWorkspaces();
-  }, []);
+  }, [form.workspace]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
