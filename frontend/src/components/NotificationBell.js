@@ -50,7 +50,7 @@ const NotificationBell = ({ isHeader = false }) => {
         )}
       </button>
       {showNotifications && (
-        <div className="absolute bottom-full right-0 mb-2.5 z-50">
+        <div className="absolute bottom-full left-0 mb-2.5 z-50">
           <NotificationsPopover onClose={() => setShowNotifications(false)} />
         </div>
       )}

@@ -61,7 +61,7 @@ const NotificationsPopover = ({ onClose }) => {
     };
 
     return (
-        <div className="w-80 bg-[#141414]/90 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.6)] border border-[#1E1E1E] overflow-hidden animate-fade-in-up text-[#D1D1D1]" ref={popoverRef}>
+        <div className="w-72 bg-[#141414]/90 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.6)] border border-[#1E1E1E] overflow-hidden animate-fade-in-up text-[#D1D1D1]" ref={popoverRef}>
             <div className="p-4 border-b border-[#1E1E1E] flex justify-between items-center bg-[#0A0A0A]/40">
                 <h3 className="font-bold text-sm text-[#D1D1D1]">Notifications</h3>
                 <button onClick={onClose} className="text-[#605E5E] hover:text-[#D1D1D1] transition-colors"><XMarkIcon className="w-4 h-4"/></button>
