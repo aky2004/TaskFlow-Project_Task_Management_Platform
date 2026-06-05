@@ -61,45 +61,45 @@ const NotificationsPopover = ({ onClose }) => {
     };
 
     return (
-        <div className="absolute right-0 top-14 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-100 dark:border-gray-700 z-50 overflow-hidden animate-fade-in-up" ref={popoverRef}>
-            <div className="p-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
-                <h3 className="font-bold text-gray-900 dark:text-white">Notifications</h3>
-                <button onClick={onClose} className="text-gray-400 hover:text-gray-600"><XMarkIcon className="w-5 h-5"/></button>
+        <div className="w-80 bg-[#141414]/90 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.6)] border border-[#1E1E1E] overflow-hidden animate-fade-in-up text-[#D1D1D1]" ref={popoverRef}>
+            <div className="p-4 border-b border-[#1E1E1E] flex justify-between items-center bg-[#0A0A0A]/40">
+                <h3 className="font-bold text-sm text-[#D1D1D1]">Notifications</h3>
+                <button onClick={onClose} className="text-[#605E5E] hover:text-[#D1D1D1] transition-colors"><XMarkIcon className="w-4 h-4"/></button>
             </div>
             <div className="max-h-96 overflow-y-auto custom-scrollbar">
                 {loading ? (
-                    <div className="p-8 text-center text-gray-400 text-xs">Loading...</div>
+                    <div className="p-8 text-center text-[#605E5E] text-xs">Loading...</div>
                 ) : notifications.length === 0 ? (
-                    <div className="p-8 text-center text-gray-400 text-xs text-center flex flex-col items-center gap-2">
+                    <div className="p-8 text-center text-[#605E5E] text-xs flex flex-col items-center gap-2">
                         <BellIcon className="w-8 h-8 opacity-20"/>
                         No notifications
                     </div>
                 ) : (
                     notifications.map(n => (
-                        <div key={n._id} className={`p-4 border-b border-gray-50 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors ${n.isRead ? 'opacity-60' : ''}`}>
+                        <div key={n._id} className={`p-4 border-b border-[#1E1E1E]/50 hover:bg-[#1C1C1E]/50 transition-colors ${n.isRead ? 'opacity-50' : ''}`}>
                              <div className="flex gap-3">
-                                <div className="mt-1 min-w-[32px]">
-                                     <div className="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-xs">
-                                         {n.sender?.name?.charAt(0)}
+                                <div className="mt-0.5 min-w-[28px]">
+                                     <div className="w-7 h-7 rounded-full bg-[#6366F1]/10 text-[#A5B4FC] flex items-center justify-center font-extrabold text-[11px] border border-[#6366F1]/20">
+                                         {n.sender?.name?.charAt(0).toUpperCase()}
                                      </div>
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm text-gray-800 dark:text-gray-200 leading-snug mb-1">
-                                        <span className="font-bold">{n.sender?.name}</span> invited you to <span className="font-bold">{n.relatedProject?.name}</span>
+                                    <p className="text-xs text-[#D1D1D1] leading-relaxed mb-1.5">
+                                        <span className="font-bold text-white">{n.sender?.name}</span> invited you to <span className="font-bold text-white">{n.relatedProject?.name}</span>
                                     </p>
-                                    <p className="text-[10px] text-gray-400 mb-3">{new Date(n.createdAt).toLocaleDateString()}</p>
+                                    <p className="text-[9px] font-semibold text-[#605E5E] mb-3">{new Date(n.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
                                     
                                     {n.type === 'project-invited' && !n.isRead && (
                                         <div className="flex gap-2">
                                             <button 
                                                 onClick={() => handleAccept(n)}
-                                                className="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-xs font-bold transition-colors"
+                                                className="px-3 py-1.5 bg-[#6366F1] hover:bg-[#4f46e5] text-white rounded-lg text-[10px] font-extrabold transition-all shadow-sm shadow-[#6366F1]/20"
                                             >
                                                 Accept
                                             </button>
                                             <button 
                                                 onClick={() => handleDecline(n)}
-                                                className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300 rounded-lg text-xs font-bold transition-colors"
+                                                className="px-3 py-1.5 bg-[#2A2A2A] hover:bg-[#363636] text-[#D1D1D1] rounded-lg text-[10px] font-extrabold transition-all border border-[#363636]"
                                             >
                                                 Decline
                                             </button>
