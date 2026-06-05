@@ -1060,7 +1060,7 @@ const LandingPage = () => {
             </div>
 
             <div className="lp-footer-bottom-right">
-              <a href="#" className="lp-footer-privacy-link">Terms &amp; Privacy</a>
+              <button className="lp-footer-privacy-link" style={{background: 'none', border: 'none', cursor: 'pointer', color: 'inherit'}}>Terms &amp; Privacy</button>
               <div className="lp-footer-divider-dot" />
               <div className="lp-footer-status">
                 <span className="pulse" />

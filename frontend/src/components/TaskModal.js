@@ -34,7 +34,7 @@ const TaskModal = ({ task, onClose, onUpdate, onDelete }) => {
   const { user } = useAuth();
   const { emitTaskViewing, emitTaskStopViewing, onTaskUpdate, onPresenceUpdate } = useSocket();
   const [editedTask, setEditedTask] = useState({ ...task });
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [checklistItem, setChecklistItem] = useState('');
   const [projectMembers, setProjectMembers] = useState([]);
   const [projectCustomFields, setProjectCustomFields] = useState([]);
@@ -104,8 +104,6 @@ const TaskModal = ({ task, onClose, onUpdate, onDelete }) => {
     let interval;
     if (isTimerRunning) {
       interval = setInterval(() => {
-        const now = Date.now();
-        const diff = Math.floor((now - timerStart) / 60000); // minutes
         // We only update visual if needed, but here we just track logic
       }, 1000);
     }

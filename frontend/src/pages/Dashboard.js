@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 import NotificationsPopover from '../components/NotificationsPopover';
 import { getAvatarUrl } from '../utils/avatar';
 import CreateTaskModal from '../components/CreateTaskModal';
 import CreateProjectModal from '../components/CreateProjectModal';
 import AITaskGeneratorModal from '../components/AITaskGeneratorModal';
-import { projectAPI, taskAPI, workspaceAPI, messageAPI, platformUsageAPI } from '../services/api';
+import { projectAPI, taskAPI, workspaceAPI, platformUsageAPI } from '../services/api';
 import {
   PlusIcon,
   FolderIcon,
@@ -22,8 +21,6 @@ import {
   TableCellsIcon,
   UserGroupIcon,
   DocumentTextIcon,
-  ChatBubbleLeftRightIcon,
-  PaperAirplaneIcon,
   ClockIcon,
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
@@ -32,16 +29,7 @@ import { SiReact, SiTailwindcss, SiNodedotjs, SiExpress, SiMongodb, SiSocketdoti
 
 import '../styles/Dashboard.css';
 
-const motivationalQuotes = [
-  { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
-  { text: "Focus on being productive instead of busy.", author: "Tim Ferriss" },
-  { text: "You do not rise to the level of your goals. You fall to the level of your systems.", author: "James Clear" },
-  { text: "Amateurs sit and wait for inspiration, the rest of us just get up and go to work.", author: "Stephen King" },
-  { text: "Simplicity is the ultimate sophistication.", author: "Leonardo da Vinci" },
-  { text: "Make each day your masterpiece.", author: "John Wooden" },
-  { text: "Action is the foundational key to all success.", author: "Pablo Picasso" },
-  { text: "Your mind is for having ideas, not holding them.", author: "David Allen" }
-];
+
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -51,7 +39,7 @@ const Dashboard = () => {
   const [workspaces, setWorkspaces] = useState([]);
   const [activeWorkspace, setActiveWorkspace] = useState(null);
   const [activeProject, setActiveProject] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const { workspaceId } = useParams();
   const [showWorkspaceDropdown, setShowWorkspaceDropdown] = useState(false);
   const workspaceDropdownRef = React.useRef(null);
@@ -144,32 +132,8 @@ const Dashboard = () => {
   const [showAIGenerator, setShowAIGenerator] = useState(false);
 
   // Custom Widgets State
-  const [chatInput, setChatInput] = useState('');
-  const [chatMessages, setChatMessages] = useState([]);
   const [timerSeconds, setTimerSeconds] = useState(1210); // 20:10 tracker
-  const [aiSuggestions, setAiSuggestions] = useState([]);
-  const [quoteIdx, setQuoteIdx] = useState(0);
 
-  // Initialize quote based on date so it shifts daily, but can also be shuffled
-  useEffect(() => {
-    const day = new Date().getDate();
-    setQuoteIdx(day % motivationalQuotes.length);
-  }, []);
-
-  const getNextQuote = () => {
-    let nextIdx = quoteIdx;
-    while (nextIdx === quoteIdx && motivationalQuotes.length > 1) {
-      nextIdx = Math.floor(Math.random() * motivationalQuotes.length);
-    }
-    setQuoteIdx(nextIdx);
-    toast.success("New inspiration loaded!", { icon: "✨" });
-  };
-
-  const getQuoteForDisplay = () => {
-    const quote = `"${motivationalQuotes[quoteIdx].text}" — ${motivationalQuotes[quoteIdx].author}`;
-    navigator.clipboard.writeText(quote);
-    toast.success("Quote copied to clipboard!");
-  };
 
   // Decrement timer
   useEffect(() => {
@@ -185,39 +149,9 @@ const Dashboard = () => {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }, [timerSeconds]);
 
-  // Generate Dynamic AI Suggestions based on active tasks
-  useEffect(() => {
-    if (loading || allTasks.length === 0) return;
-    
-    const newSuggestions = [];
-    let idCounter = 1;
-
-    const overdueTasks = allTasks.filter(t => t.dueDate && new Date(t.dueDate) < new Date() && t.status !== 'completed');
-    if (overdueTasks.length > 0) {
-      newSuggestions.push({ id: `s-${idCounter++}`, text: `You have ${overdueTasks.length} overdue task(s) needing attention.`, action: 'Review Tasks' });
-    }
-
-    const highPriorityPending = allTasks.filter(t => (t.priority === 'high' || t.priority === 'urgent') && t.status === 'todo');
-    if (highPriorityPending.length > 0) {
-      newSuggestions.push({ id: `s-${idCounter++}`, text: `${highPriorityPending.length} high priority task(s) are pending.`, action: 'Prioritize' });
-    }
-
-    const staleLimit = new Date();
-    staleLimit.setDate(staleLimit.getDate() - 7);
-    const staleTasks = allTasks.filter(t => t.status === 'in-progress' && new Date(t.updatedAt || t.createdAt) < staleLimit);
-    if (staleTasks.length > 0) {
-      newSuggestions.push({ id: `s-${idCounter++}`, text: `${staleTasks.length} task(s) are stale in-progress.`, action: 'Check Status' });
-    }
-
-    if (newSuggestions.length === 0 && projects.length > 0) {
-      newSuggestions.push({ id: `s-${idCounter++}`, text: `Consider using AI to automate your task breakdown structure.`, action: 'Use AI Generator' });
-    }
-
-    setAiSuggestions(newSuggestions.slice(0, 2));
-  }, [allTasks, projects, loading]);
-
   useEffect(() => {
     fetchDashboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Fetch today's platform usage from the backend
@@ -490,7 +424,7 @@ const Dashboard = () => {
       maxScale,
       isSimulated: false
     };
-  }, [allTasks, projects, filteredTasks, filteredProjects, platformUsageData]);
+  }, [projects, filteredTasks, filteredProjects, platformUsageData]);
 
   const formattedFocusTime = useMemo(() => {
     const hrs = Math.floor(productivityData.totalMinutes / 60);
@@ -501,87 +435,7 @@ const Dashboard = () => {
     return `${mins}m`;
   }, [productivityData.totalMinutes]);
 
-  // Statistics
-  const projectStats = useMemo(() => {
-    if (!activeProject) return { total: 0, completed: 0, inProgress: 0, efficiency: 100 };
-    const pTasks = allTasks.filter(t => {
-      const pid = typeof t.project === 'object' ? t.project?._id : t.project;
-      return pid === activeProject._id;
-    });
-    
-    const completed = pTasks.filter(t => t.status === 'completed' || t.status === 'Completed').length;
-    const inProgress = pTasks.filter(t => t.status === 'in-progress' || t.status === 'In Progress').length;
-    const total = pTasks.length;
-    const efficiency = total > 0 ? Math.round((completed / total) * 100) : 100;
-    
-    return { total, completed, inProgress, efficiency };
-  }, [allTasks, activeProject]);
 
-  // Dynamic Kanban Task Columns filtering
-  const todoTasks = useMemo(() => {
-    if (!activeProject) return [];
-    return allTasks.filter(t => {
-      const pid = typeof t.project === 'object' ? t.project?._id : t.project;
-      return pid === activeProject._id && (t.column === 'col_todo' || t.status === 'todo');
-    });
-  }, [allTasks, activeProject]);
-
-  const inProgressTasks = useMemo(() => {
-    if (!activeProject) return [];
-    return allTasks.filter(t => {
-      const pid = typeof t.project === 'object' ? t.project?._id : t.project;
-      return pid === activeProject._id && (t.column === 'col_in_progress' || t.status === 'in-progress');
-    });
-  }, [allTasks, activeProject]);
-
-  const reviewTasks = useMemo(() => {
-    if (!activeProject) return [];
-    return allTasks.filter(t => {
-      const pid = typeof t.project === 'object' ? t.project?._id : t.project;
-      return pid === activeProject._id && (t.column === 'col_review' || t.status === 'review');
-    });
-  }, [allTasks, activeProject]);
-
-  const completedTasks = useMemo(() => {
-    if (!activeProject) return [];
-    return allTasks.filter(t => {
-      const pid = typeof t.project === 'object' ? t.project?._id : t.project;
-      return pid === activeProject._id && (t.column === 'col_done' || t.status === 'completed');
-    });
-  }, [allTasks, activeProject]);
-
-  // Dynamic project chat retrieval
-  const fetchChatMessages = async (projectId) => {
-    try {
-      const res = await messageAPI.getProjectMessages(projectId);
-      setChatMessages(res.data.messages || []);
-    } catch (error) {
-      console.error('Failed to fetch chat logs:', error);
-    }
-  };
-
-  useEffect(() => {
-    if (activeProject) {
-      fetchChatMessages(activeProject._id);
-    } else {
-      setChatMessages([]);
-    }
-  }, [activeProject]);
-
-  const handleSendChatMessage = async (e) => {
-    e.preventDefault();
-    if (!chatInput.trim() || !activeProject) return;
-    try {
-      const res = await messageAPI.sendMessage({
-        project: activeProject._id,
-        content: chatInput.trim(),
-      });
-      setChatMessages(prev => [...prev, res.data.messageData]);
-      setChatInput('');
-    } catch (error) {
-      toast.error('Failed to dispatch message');
-    }
-  };
 
   const handleCreateWorkspace = async (e) => {
     e.preventDefault();
@@ -613,52 +467,7 @@ const Dashboard = () => {
     return 'Good evening';
   };
 
-  // Render a task card for kanban columns
-  const getTaskCard = (task) => {
-    const totalCheck = task.checklist?.length || 0;
-    const completedCheck = task.checklist?.filter(c => c.completed).length || 0;
-    
-    return (
-      <div key={task._id} className="task-board-card" onClick={() => {
-        const pId = typeof task.project === 'object' ? task.project?._id : task.project;
-        if (pId) navigate(`/projects/${pId}`);
-      }}>
-        <div className="task-card-tags">
-          <span className={`task-card-badge ${task.priority === 'urgent' || task.priority === 'high' ? 'task-card-badge--urgent' : 'task-card-badge--low'}`}>
-            {task.priority || 'Medium'}
-          </span>
-          {task.dueDate && (
-            <span className="task-card-badge task-card-badge--date">
-              {new Date(task.dueDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
-            </span>
-          )}
-        </div>
-        <h4 className="task-card-title">{task.title}</h4>
-        {task.description && <p className="task-card-desc">{task.description}</p>}
-        
-        <footer className="task-card-footer">
-          <div className="stacked-avatar-list">
-            {task.assignees?.slice(0, 3).map((ast, i) => (
-              <img
-                key={i}
-                src={getAvatarUrl(ast)}
-                className="stacked-avatar"
-                alt="Assignee"
-              />
-            ))}
-            {task.assignees?.length > 3 && (
-              <div className="stacked-avatar-plus">+{task.assignees.length - 3}</div>
-            )}
-          </div>
-          
-          <div className="task-card-metrics">
-            {totalCheck > 0 && <span className="task-card-metric-item"><CheckCircleIcon className="w-3 h-3"/> {completedCheck}/{totalCheck}</span>}
-            <span className="task-card-metric-item"><ChatBubbleLeftRightIcon className="w-3 h-3"/> {task.comments?.length || 0}</span>
-          </div>
-        </footer>
-      </div>
-    );
-  };
+
 
   // --- REDESIGN DYNAMIC DATA CALCULATIONS ---
   

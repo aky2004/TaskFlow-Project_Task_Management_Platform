@@ -548,7 +548,7 @@ const KanbanBoard = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
   const { socket, joinProject, leaveProject } = useSocket();
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const { user, logout } = useAuth();
 
   const formatMsgTime = (createdAt) => {
@@ -584,7 +584,7 @@ const KanbanBoard = () => {
   const [createTaskDefaultStatus, setCreateTaskDefaultStatus] = useState('todo');
 
   // --- Dynamic Dashboard-style Sidebar & Widgets State ---
-  const [workspaces, setWorkspaces] = useState([]);
+  const [, setWorkspaces] = useState([]);
   const [activeWorkspace, setActiveWorkspace] = useState(null);
   const [projects, setProjects] = useState([]);
   const [sidebarSearchQuery, setSidebarSearchQuery] = useState('');

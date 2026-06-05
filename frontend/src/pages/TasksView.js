@@ -6,8 +6,7 @@ import { taskAPI, projectAPI } from '../services/api';
 import {
   ListBulletIcon, Squares2X2Icon, ChartBarIcon,
   PhotoIcon, FunnelIcon, ArrowsUpDownIcon, ChevronDownIcon,
-  XMarkIcon, PlusIcon, ArrowLeftIcon, SunIcon, MoonIcon,
-  PaperClipIcon, ClockIcon, 
+  XMarkIcon, PlusIcon, ArrowLeftIcon, ClockIcon, 
   BookmarkIcon,CheckCircleIcon,
   ArrowRightOnRectangleIcon, EllipsisHorizontalIcon
 } from '@heroicons/react/24/outline';
@@ -396,65 +395,7 @@ const TasksView = ({ projectId, isEmbedded }) => {
     return { start: min, end: max, days: Math.max(14, Math.ceil((max - min) / (1000 * 60 * 60 * 24))) };
   }, [timelineTasks]);
 
-  const timelineAreas = useMemo(() => {
-    if (!timelineTasks.length) return { path1: '', path2: '', path3: '' };
-    
-    const colWidth = 130;
-    const height = 450;
-    const days = Math.min(timelineRange.days, 60);
 
-    const points = { g1: [], g2: [], g3: [] };
-    let maxTotal = 1;
-    
-    for (let i = 0; i <= days; i++) {
-        const currentDate = new Date(timelineRange.start);
-        currentDate.setDate(currentDate.getDate() + i);
-        
-        let counts = { g1: 0, g2: 0, g3: 0 };
-        timelineTasks.forEach(t => {
-            const s = new Date(t.startDate || t.dueDate || new Date());
-            const e = new Date(t.dueDate || t.startDate || new Date());
-            const dStr = currentDate.toDateString();
-            if ((currentDate >= s && currentDate <= e) || s.toDateString() === dStr || e.toDateString() === dStr) {
-                 if (t.priority === 'urgent' || t.priority === 'high') counts.g1 += 1;
-                 else if (t.priority === 'medium') counts.g2 += 1;
-                 else counts.g3 += 1;
-            }
-        });
-        
-        counts.g1 += 1.5; counts.g2 += 2.5; counts.g3 += 3.5; 
-        
-        const rand = Math.sin(i * 0.8) * 1.5;
-        points.g1.push(counts.g1 + rand);
-        points.g2.push(counts.g2 + rand + counts.g1); 
-        points.g3.push(counts.g3 + rand + counts.g2 + counts.g1);
-        
-        maxTotal = Math.max(maxTotal, counts.g3 + rand + counts.g2 + counts.g1 + 5);
-    }
-    
-    const generatePath = (dataArr) => {
-        if (!dataArr.length) return '';
-        let d = `M 65 ${height - (dataArr[0]/maxTotal)*height}`;
-        for (let i = 0; i < dataArr.length - 1; i++) {
-            const x0 = i * colWidth + 65;
-            const y0 = height - (dataArr[i]/maxTotal)*height;
-            const x1 = (i + 1) * colWidth + 65;
-            const y1 = height - (dataArr[i+1]/maxTotal)*height;
-            const cx = (x0 + x1) / 2;
-            d += ` C ${cx} ${y0}, ${cx} ${y1}, ${x1} ${y1}`;
-        }
-        
-        const lastX = (dataArr.length - 1) * colWidth + 65;
-        d += ` L ${lastX} 800 L 65 800 Z`; 
-        return d;
-    };
-    
-    return {
-       path1: generatePath(points.g3), 
-       path2: generatePath(points.g2), 
-       path3: generatePath(points.g1), 
-    };
-  }, [timelineTasks, timelineRange]);
 
   if (loading) {
     return (

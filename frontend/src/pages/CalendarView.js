@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { taskAPI, projectAPI } from '../services/api';
@@ -40,7 +40,6 @@ const CalendarView = ({ projectId, isEmbedded }) => {
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedTask, setSelectedTask] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
   const [showNotifications, setShowNotifications] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -313,7 +312,7 @@ const CalendarView = ({ projectId, isEmbedded }) => {
                   </p>
                 </div>
                 <button
-                  onClick={() => { setSelectedDate(null); setSelectedTask(null); }}
+                  onClick={() => { setSelectedDate(null); }}
                   className="w-7 h-7 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-700 text-slate-500 transition-colors flex items-center justify-center"
                 >
                   <XMarkIcon className="w-4 h-4" />

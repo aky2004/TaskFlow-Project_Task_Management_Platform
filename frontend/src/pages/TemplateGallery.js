@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 import { templateAPI } from '../services/api';
 import toast from 'react-hot-toast';
 import '../styles/Dashboard.css';

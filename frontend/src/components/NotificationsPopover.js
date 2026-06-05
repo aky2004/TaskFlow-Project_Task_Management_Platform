@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useAuth } from '../context/AuthContext';
 import { notificationAPI, projectAPI } from '../services/api';
 import { XMarkIcon, BellIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';

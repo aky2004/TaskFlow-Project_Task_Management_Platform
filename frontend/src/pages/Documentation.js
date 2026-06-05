@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 import { documentAPI, projectAPI } from '../services/api';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
