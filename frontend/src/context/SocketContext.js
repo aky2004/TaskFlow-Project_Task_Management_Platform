@@ -20,6 +20,8 @@ export const SocketProvider = ({ children }) => {
   const activeProjectRef = useRef(null);
   const activeWorkspaceRef = useRef(null);
 
+  const socketRef = useRef(null);
+
   useEffect(() => {
     if (user) {
       const token = sessionStorage.getItem('accessToken');
@@ -29,6 +31,8 @@ export const SocketProvider = ({ children }) => {
       const newSocket = io(SOCKET_URL, {
         auth: { token },
         transports: ['websocket', 'polling'],
+        reconnectionAttempts: 5,
+        reconnectionDelay: 2000,
       });
 
       newSocket.on('connect', () => {
@@ -63,21 +67,25 @@ export const SocketProvider = ({ children }) => {
         }
       });
 
+      socketRef.current = newSocket;
       setSocket(newSocket);
 
       // Cleanup on unmount
       return () => {
         newSocket.close();
+        socketRef.current = null;
       };
     } else {
       // Disconnect socket if user logs out
-      if (socket) {
-        socket.close();
+      if (socketRef.current) {
+        socketRef.current.close();
+        socketRef.current = null;
         setSocket(null);
         setConnected(false);
       }
     }
-  }, [user, socket]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const joinProject = useCallback((projectId) => {
     activeProjectRef.current = projectId;

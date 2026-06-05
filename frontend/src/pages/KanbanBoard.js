@@ -673,23 +673,26 @@ const KanbanBoard = () => {
     }
   };
 
+  // Load project data only when projectId changes
   useEffect(() => {
     loadProjectData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projectId]);
+
+  // Socket event listeners
+  useEffect(() => {
+    if (!socket) return;
     joinProject(projectId);
-    if (socket) {
-      socket.on('task:created', handleTaskCreated);
-      socket.on('task:updated', handleTaskUpdated);
-      socket.on('task:deleted', handleTaskDeleted);
-      socket.on('task:moved', handleTaskMoved);
-    }
+    socket.on('task:created', handleTaskCreated);
+    socket.on('task:updated', handleTaskUpdated);
+    socket.on('task:deleted', handleTaskDeleted);
+    socket.on('task:moved', handleTaskMoved);
     return () => {
       leaveProject(projectId);
-      if (socket) {
-        socket.off('task:created');
-        socket.off('task:updated');
-        socket.off('task:deleted');
-        socket.off('task:moved');
-      }
+      socket.off('task:created');
+      socket.off('task:updated');
+      socket.off('task:deleted');
+      socket.off('task:moved');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId, socket]);
