@@ -9,12 +9,11 @@ import {
   ArrowLeftIcon,
   XMarkIcon,
   ExclamationTriangleIcon,
-  BellIcon,
   ArrowRightOnRectangleIcon,
   CalendarDaysIcon,
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
-import NotificationsPopover from '../components/NotificationsPopover';
+import NotificationBell from '../components/NotificationBell';
 import { getAvatarUrl } from '../utils/avatar';
 import '../styles/Dashboard.css';
 
@@ -41,7 +40,6 @@ const CalendarView = ({ projectId, isEmbedded }) => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState('all');
-  const [showNotifications, setShowNotifications] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
 
   const today = new Date();
@@ -158,10 +156,7 @@ const CalendarView = ({ projectId, isEmbedded }) => {
             <span className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">TaskFlow Calendar</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="relative">
-              <button onClick={() => setShowNotifications(!showNotifications)} className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-500 transition-colors"><BellIcon className="w-5 h-5" /></button>
-              {showNotifications && <NotificationsPopover onClose={() => setShowNotifications(false)} />}
-            </div>
+            <NotificationBell isHeader={true} />
 
             <button onClick={logout} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-slate-500 hover:text-red-600 transition-colors"><ArrowRightOnRectangleIcon className="w-5 h-5" /></button>
             <Link to="/profile" className="ml-2 flex items-center">

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import NotificationsPopover from '../components/NotificationsPopover';
+import NotificationBell from '../components/NotificationBell';
 import { getAvatarUrl } from '../utils/avatar';
 import {
   SparklesIcon, BellIcon, ArrowRightOnRectangleIcon, ArrowLeftIcon,
@@ -20,7 +20,6 @@ const Profile = () => {
 
   const [activeTab, setActiveTab] = useState('profile');
   const [loading, setLoading] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
 
   const [profileData, setProfileData] = useState({ name: '', email: '', avatar: '' });
   const [passwordData, setPasswordData] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
@@ -155,15 +154,7 @@ const Profile = () => {
             <span className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">TaskFlow Settings</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="relative">
-              <button 
-                onClick={() => setShowNotifications(!showNotifications)} 
-                className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors"
-              >
-                <BellIcon className="w-5 h-5" />
-              </button>
-              {showNotifications && <NotificationsPopover onClose={() => setShowNotifications(false)} />}
-            </div>
+            <NotificationBell isHeader={true} />
 
             <button onClick={logout} title="Logout" className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-slate-500 hover:text-red-600 transition-colors">
               <ArrowRightOnRectangleIcon className="w-5 h-5" />

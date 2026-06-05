@@ -278,7 +278,7 @@ body {
   box-sizing: border-box;
   flex-shrink: 0;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Subtle top glow accent on sidebar */

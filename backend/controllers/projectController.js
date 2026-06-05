@@ -270,7 +270,7 @@ exports.addMember = async (req, res, next) => {
     await project.save();
     
     // Create detailed notification for the invited user
-    await Notification.create({
+    const notification = await Notification.create({
         recipient: userToAdd._id,
         sender: req.user._id,
         type: 'project-invited',
@@ -279,6 +279,10 @@ exports.addMember = async (req, res, next) => {
         relatedProject: project._id,
         link: `/projects/${project._id}/accept-invite` // Frontend route to handle acceptance
     });
+
+    if (req.io) {
+        req.io.to(`user:${userToAdd._id}`).emit('notification:new', notification);
+    }
 
     await project.populate('members.user', 'name email avatar');
 
@@ -363,7 +367,7 @@ exports.respondToInvitation = async (req, res, next) => {
             member.status = 'active';
             
             // Notify owner
-             await Notification.create({
+            const notification = await Notification.create({
                 recipient: project.owner,
                 sender: req.user._id,
                 type: 'project-invited', // reusing type or adding new one
@@ -371,6 +375,9 @@ exports.respondToInvitation = async (req, res, next) => {
                 message: `${req.user.name} accepted your invitation to "${project.name}"`,
                 relatedProject: project._id,
             });
+            if (req.io) {
+                req.io.to(`user:${project.owner}`).emit('notification:new', notification);
+            }
         }
 
         await project.save();
@@ -498,7 +505,7 @@ exports.requestEditAccess = async (req, res, next) => {
 
         // Create a notification for the owner
         const Notification = require('../models/Notification');
-        await Notification.create({
+        const notification = await Notification.create({
             recipient: project.owner,
             sender: req.user._id,
             type: 'access_request',
@@ -507,6 +514,9 @@ exports.requestEditAccess = async (req, res, next) => {
             relatedProject: project._id,
             link: `/projects/${project._id}`
         });
+        if (req.io) {
+            req.io.to(`user:${project.owner}`).emit('notification:new', notification);
+        }
 
         res.status(200).json({
             success: true,

@@ -201,7 +201,12 @@ exports.createTask = async (req, res, next) => {
         relatedTask: task._id,
         relatedProject: project,
       }));
-      await Notification.insertMany(notifications);
+      const inserted = await Notification.insertMany(notifications);
+      if (req.io) {
+        inserted.forEach((notif) => {
+          req.io.to(`user:${notif.recipient}`).emit('notification:new', notif);
+        });
+      }
     }
 
     // Emit socket event (to be handled by socket.io)

@@ -63,11 +63,16 @@ exports.addComment = async (req, res, next) => {
         relatedTask: taskId,
         relatedProject: task.project,
       }));
-      await Notification.insertMany(notifications);
+      const inserted = await Notification.insertMany(notifications);
+      if (req.io) {
+        inserted.forEach((notif) => {
+          req.io.to(`user:${notif.recipient}`).emit('notification:new', notif);
+        });
+      }
     } 
     // Create notification for task owner if not the one commenting
     else if (task.reporter.toString() !== req.user._id.toString()) {
-       await Notification.create({
+       const notification = await Notification.create({
         recipient: task.reporter,
         sender: req.user._id,
         type: 'comment-added',
@@ -77,6 +82,9 @@ exports.addComment = async (req, res, next) => {
         relatedTask: taskId,
         relatedProject: task.project,
        });
+       if (req.io) {
+         req.io.to(`user:${task.reporter}`).emit('notification:new', notification);
+       }
     }
 
     // Emit socket event

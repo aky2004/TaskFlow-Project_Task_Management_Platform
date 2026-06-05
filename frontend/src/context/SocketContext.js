@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { useAuth } from './AuthContext';
+import { notificationAPI } from '../services/api';
 
 const SocketContext = createContext();
 
@@ -16,11 +17,28 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [connected, setConnected] = useState(false);
   const { user } = useAuth();
+  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState(0);
 
   const activeProjectRef = useRef(null);
   const activeWorkspaceRef = useRef(null);
 
   const socketRef = useRef(null);
+
+  useEffect(() => {
+    if (user) {
+      const fetchUnreadCount = async () => {
+        try {
+          const res = await notificationAPI.getNotifications();
+          setUnreadNotificationsCount(res.data.unreadCount || 0);
+        } catch (e) {
+          console.error('Failed to fetch unread count:', e);
+        }
+      };
+      fetchUnreadCount();
+    } else {
+      setUnreadNotificationsCount(0);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (user) {
@@ -46,6 +64,11 @@ export const SocketProvider = ({ children }) => {
           console.log('Rejoining active workspace room:', activeWorkspaceRef.current);
           newSocket.emit('workspace:join', activeWorkspaceRef.current);
         }
+      });
+
+      newSocket.on('notification:new', (notification) => {
+        console.log('🔔 New notification received:', notification);
+        setUnreadNotificationsCount(prev => prev + 1);
       });
 
       newSocket.on('disconnect', () => {
@@ -168,6 +191,8 @@ export const SocketProvider = ({ children }) => {
     onTaskUpdate,
     onCommentAdded,
     onPresenceUpdate,
+    unreadNotificationsCount,
+    setUnreadNotificationsCount,
   };
 
   return <SocketContext.Provider value={value}>{children}</SocketContext.Provider>;

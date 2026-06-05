@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import NotificationsPopover from '../components/NotificationsPopover';
+import NotificationBell from '../components/NotificationBell';
 import { getAvatarUrl } from '../utils/avatar';
 import CreateTaskModal from '../components/CreateTaskModal';
 import CreateProjectModal from '../components/CreateProjectModal';
@@ -14,7 +14,6 @@ import {
   CalendarDaysIcon,
   ChartBarIcon,
   ChevronRightIcon,
-  BellIcon,
   Squares2X2Icon,
   MagnifyingGlassIcon,
   XMarkIcon,
@@ -121,7 +120,6 @@ const Dashboard = () => {
       navigate(`/workspaces/${activeWorkspace._id}`, { replace: true });
     }
   }, [activeWorkspace, workspaceId, navigate]);
-  const [showNotifications, setShowNotifications] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false);
   const [newWorkspaceName, setNewWorkspaceName] = useState('');
@@ -795,12 +793,7 @@ const Dashboard = () => {
               </Link>
 
               <div className="flex items-center gap-0.5 shrink-0">
-                 <div className="relative">
-                   <button onClick={() => setShowNotifications(!showNotifications)} className="p-1.5 rounded-lg transition-colors border-none bg-transparent cursor-pointer" style={{ color: '#605E5E' }} onMouseEnter={(e) => { e.currentTarget.style.color = '#D1D1D1'; e.currentTarget.style.background = '#141414'; }} onMouseLeave={(e) => { e.currentTarget.style.color = '#605E5E'; e.currentTarget.style.background = 'transparent'; }}>
-                     <BellIcon className="w-4 h-4" />
-                   </button>
-                   {showNotifications && <div className="absolute bottom-full right-0 mb-2 z-50"><NotificationsPopover onClose={() => setShowNotifications(false)} /></div>}
-                 </div>
+                 <NotificationBell />
                  <button onClick={logout} className="p-1.5 rounded-lg transition-colors border-none bg-transparent cursor-pointer" style={{ color: '#605E5E' }} onMouseEnter={(e) => { e.currentTarget.style.color = '#EF4444'; e.currentTarget.style.background = 'rgba(239, 68, 68, 0.08)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = '#605E5E'; e.currentTarget.style.background = 'transparent'; }}>
                    <ArrowRightOnRectangleIcon className="w-4 h-4" />
                  </button>

@@ -5,7 +5,7 @@ import { useSocket } from '../context/SocketContext';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { taskAPI, projectAPI, workspaceAPI, messageAPI } from '../services/api';
-import NotificationsPopover from '../components/NotificationsPopover';
+import NotificationBell from '../components/NotificationBell';
 import {
   PlusIcon,
   EllipsisHorizontalIcon,
@@ -13,7 +13,6 @@ import {
   TrashIcon,
   Cog6ToothIcon,
   XMarkIcon,
-  BellIcon,
   ChatBubbleLeftRightIcon,
   ChevronRightIcon,
   MagnifyingGlassIcon,
@@ -567,7 +566,6 @@ const KanbanBoard = () => {
   const [loading, setLoading] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [showAddAssignee, setShowAddAssignee] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [unreadChatCount, setUnreadChatCount] = useState(0);
   const [activeView, setActiveView] = useState('board');
@@ -1003,10 +1001,7 @@ const KanbanBoard = () => {
 
               <div className="flex items-center gap-0.5 shrink-0">
                 <div className="relative">
-                  <button onClick={() => setShowNotifications(!showNotifications)} className="p-1.5 rounded-lg transition-colors border-none bg-transparent cursor-pointer" style={{ color: '#605E5E' }} onMouseEnter={(e) => { e.currentTarget.style.color = '#D1D1D1'; e.currentTarget.style.background = '#141414'; }} onMouseLeave={(e) => { e.currentTarget.style.color = '#605E5E'; e.currentTarget.style.background = 'transparent'; }}>
-                    <BellIcon className="w-4 h-4" />
-                  </button>
-                  {showNotifications && <div className="absolute bottom-full right-0 mb-2 z-50"><NotificationsPopover onClose={() => setShowNotifications(false)} /></div>}
+                  <NotificationBell />
                 </div>
                 <button onClick={logout} className="p-1.5 rounded-lg transition-colors border-none bg-transparent cursor-pointer" style={{ color: '#605E5E' }} onMouseEnter={(e) => { e.currentTarget.style.color = '#EF4444'; e.currentTarget.style.background = 'rgba(239, 68, 68, 0.08)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = '#605E5E'; e.currentTarget.style.background = 'transparent'; }}>
                   <ArrowRightOnRectangleIcon className="w-4 h-4" />

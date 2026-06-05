@@ -10,10 +10,9 @@ import {
   BookmarkIcon,CheckCircleIcon,
   ArrowRightOnRectangleIcon, EllipsisHorizontalIcon
 } from '@heroicons/react/24/outline';
-import NotificationsPopover from '../components/NotificationsPopover';
+import NotificationBell from '../components/NotificationBell';
 import TaskModal from '../components/TaskModal';
 import CreateTaskModal from '../components/CreateTaskModal';
-import { BellIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import { getAvatarUrl } from '../utils/avatar';
 import '../styles/TasksView.css';
@@ -68,7 +67,6 @@ const TasksView = ({ projectId, isEmbedded }) => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('list');
-  const [showNotifications, setShowNotifications] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [showCreateTask, setShowCreateTask] = useState(false);
 
@@ -240,7 +238,7 @@ const TasksView = ({ projectId, isEmbedded }) => {
     const pairs = [
       { bg: 'rgba(59, 130, 246, 0.1)', text: '#3B82F6' },
       { bg: 'rgba(236, 72, 153, 0.1)', text: '#EC4899' },
-      { bg: 'rgba(16, 185, 129, 0.1)', text: '#10B981' },
+      { bg: 'rgba(10, 185, 129, 0.1)', text: '#10B981' },
       { bg: 'rgba(245, 158, 11, 0.1)', text: '#F59E0B' },
       { bg: 'rgba(139, 92, 246, 0.1)', text: '#8B5CF6' },
       { bg: 'rgba(6, 182, 212, 0.1)', text: '#06B6D4' },
@@ -520,12 +518,7 @@ const TasksView = ({ projectId, isEmbedded }) => {
             </Link>
 
             <div className="flex items-center gap-0.5 shrink-0">
-               <div className="relative">
-                 <button onClick={() => setShowNotifications(!showNotifications)} className="p-1.5 rounded-lg transition-colors border-none bg-transparent cursor-pointer" style={{ color: '#605E5E' }} onMouseEnter={(e) => { e.currentTarget.style.color = '#D1D1D1'; e.currentTarget.style.background = '#141414'; }} onMouseLeave={(e) => { e.currentTarget.style.color = '#605E5E'; e.currentTarget.style.background = 'transparent'; }}>
-                   <BellIcon className="w-4.5 h-4.5" />
-                 </button>
-                 {showNotifications && <div className="absolute bottom-full left-0 mb-2"><NotificationsPopover onClose={() => setShowNotifications(false)} /></div>}
-               </div>
+               <NotificationBell />
                <button onClick={logout} className="p-1.5 rounded-lg transition-colors border-none bg-transparent cursor-pointer" style={{ color: '#605E5E' }} onMouseEnter={(e) => { e.currentTarget.style.color = '#EF4444'; e.currentTarget.style.background = 'rgba(239, 68, 68, 0.08)'; }} onMouseLeave={(e) => { e.currentTarget.style.color = '#605E5E'; e.currentTarget.style.background = 'transparent'; }}>
                  <ArrowRightOnRectangleIcon className="w-4.5 h-4.5" />
                </button>

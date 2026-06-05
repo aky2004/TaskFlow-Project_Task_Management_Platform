@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { notificationAPI, projectAPI } from '../services/api';
 import { XMarkIcon, BellIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
+import { useSocket } from '../context/SocketContext';
 
 const NotificationsPopover = ({ onClose }) => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
     const popoverRef = useRef(null);
+    const { setUnreadNotificationsCount } = useSocket();
 
     useEffect(() => {
         loadNotifications();
@@ -18,12 +20,14 @@ const NotificationsPopover = ({ onClose }) => {
         }
         document.addEventListener('mousedown', handleClick);
         return () => document.removeEventListener('mousedown', handleClick);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onClose]);
 
     const loadNotifications = async () => {
         try {
             const res = await notificationAPI.getNotifications();
             setNotifications(res.data.notifications);
+            setUnreadNotificationsCount(res.data.unreadCount || 0);
         } catch (e) {
             console.error(e);
         } finally {
@@ -36,6 +40,7 @@ const NotificationsPopover = ({ onClose }) => {
             await projectAPI.respondToInvitation(notification.relatedProject._id, 'active');
             toast.success('Joined project!');
             await notificationAPI.markAsRead(notification._id);
+            setUnreadNotificationsCount(prev => Math.max(0, prev - 1));
             setNotifications(prev => prev.filter(n => n._id !== notification._id));
             window.location.reload(); 
         } catch (e) {
@@ -48,6 +53,7 @@ const NotificationsPopover = ({ onClose }) => {
             await projectAPI.respondToInvitation(notification.relatedProject._id, 'declined');
             toast.success('Invitation declined');
             await notificationAPI.markAsRead(notification._id);
+            setUnreadNotificationsCount(prev => Math.max(0, prev - 1));
             setNotifications(prev => prev.filter(n => n._id !== notification._id));
         } catch (e) {
             toast.error('Failed to decline');
