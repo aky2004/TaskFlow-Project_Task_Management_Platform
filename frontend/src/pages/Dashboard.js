@@ -24,6 +24,8 @@ import {
   DocumentTextIcon,
   ChatBubbleLeftRightIcon,
   PaperAirplaneIcon,
+  ClockIcon,
+  CheckCircleIcon,
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import { SiReact, SiTailwindcss, SiNodedotjs, SiExpress, SiMongodb, SiSocketdotio } from 'react-icons/si';
@@ -143,7 +145,9 @@ const Dashboard = () => {
 
   // Custom Widgets State
   const [chatInput, setChatInput] = useState('');
+  const [chatMessages, setChatMessages] = useState([]);
   const [timerSeconds, setTimerSeconds] = useState(1210); // 20:10 tracker
+  const [aiSuggestions, setAiSuggestions] = useState([]);
   const [quoteIdx, setQuoteIdx] = useState(0);
 
   // Initialize quote based on date so it shifts daily, but can also be shuffled

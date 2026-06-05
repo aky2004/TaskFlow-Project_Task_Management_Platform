@@ -11,6 +11,7 @@ import {
   ExclamationTriangleIcon,
   BellIcon,
   ArrowRightOnRectangleIcon,
+  CalendarDaysIcon,
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import NotificationsPopover from '../components/NotificationsPopover';
@@ -42,6 +43,7 @@ const CalendarView = ({ projectId, isEmbedded }) => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
   const [showNotifications, setShowNotifications] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
