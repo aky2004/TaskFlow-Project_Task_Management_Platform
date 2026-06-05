@@ -279,6 +279,7 @@ body {
   flex-shrink: 0;
   position: relative;
   overflow: visible;
+  z-index: 40;
 }
 
 /* Subtle top glow accent on sidebar */
