@@ -153,7 +153,7 @@ const ProjectSettingsModal = ({ project, onClose, onUpdate, onAddMember, onRemov
     if (!inviteEmail.trim()) return;
     setIsLoading(true);
     try {
-      await onAddMember({ email: inviteEmail, role: inviteRole });
+      await onAddMember(inviteEmail, inviteRole);
       toast.success('Invitation sent');
       setInviteEmail('');
     } catch (error) {
@@ -749,8 +749,14 @@ const KanbanBoard = () => {
     setProject(prev => ({ ...prev, ...data }));
   };
 
-  const handleAddMember = async (email, role) => {
-     await projectAPI.addMember(projectId, { email, role });
+  const handleAddMember = async (emailOrObj, role) => {
+     let email = emailOrObj;
+     let actualRole = role;
+     if (emailOrObj && typeof emailOrObj === 'object') {
+       email = emailOrObj.email;
+       actualRole = emailOrObj.role;
+     }
+     await projectAPI.addMember(projectId, { email, role: actualRole });
      loadProjectData();
   };
 
