@@ -197,7 +197,7 @@ const LoginModal = ({ isOpen, onClose }) => {
               {/* Google OAuth */}
               <button
                 type="button"
-                onClick={() => window.location.href = 'http://localhost:5001/api/auth/google'}
+                onClick={() => window.location.href = `${process.env.REACT_APP_API_URL || 'http://localhost:5001/api'}/auth/google`}
                 style={{
                   width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
                   padding: '12px 16px', border: '1px solid #e2e8f0', borderRadius: 10, background: '#fff',
