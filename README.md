@@ -1,99 +1,84 @@
-# TaskFlow - Full-Stack Task Management & Collaboration Application
+# TaskFlow - Full-Stack Task Management & Collaboration Platform
 
-A modern, production-ready task management and collaboration platform similar to Trello, Notion, and Asana. Built with the MERN stack (MongoDB, Express.js, React.js, Node.js) with real-time collaboration features powered by Socket.io.
+TaskFlow is a modern, enterprise-ready task management, team collaboration, and roadmap planning platform. Built on the MERN stack (MongoDB, Express.js, React 18, Node.js) with real-time WebSocket synchronization, Firebase Authentication, and Google Gemini Generative AI services.
 
-## 🚀 Features
+---
 
-### Core Functionality
-- **Complete Authentication System**
-  - JWT-based authentication with access and refresh tokens
-  - OAuth integration (Google & GitHub)
-  - Email verification and password reset
-  - Session management
-  - Role-based access control (Admin, Manager, Member, Guest)
+## 🚀 Key Features
 
-- **Workspace & Project Management**
-  - Create and manage multiple workspaces
-  - Organize projects within workspaces
-  - Team collaboration with role-based permissions
-  - Project templates for quick setup
+### 1. 🔐 Modern Authentication (Firebase & JWT)
+- **Firebase Authentication Integration**: Seamless Google Sign-In (one-tap / popup) and Email & Password auth via Firebase Client SDK.
+- **Server-Side Token Verification**: Backend verification via `firebase-admin` SDK, ensuring tamper-proof session tokens.
+- **Dual JWT Token Architecture**: Short-lived Access Tokens (15m) paired with cryptographically secure Refresh Tokens stored in HTTP-only cookies.
+- **Role-Based Access Control (RBAC)**: Admin, Manager, and Member granular workspace and project permissions.
 
-- **Advanced Task Management**
-  - Drag-and-drop Kanban boards
-  - Multiple views: Kanban, List, Calendar, Timeline
-  - Task properties: title, description, priority, status, due dates
-  - Assignees, labels, and custom fields
-  - Checklists and subtasks
-  - Task dependencies
-  - Time tracking
+### 2. 🤖 Google Gemini AI Suite
+- **Meeting Notes to Tasks**: Converts raw, unstructured meeting notes or brainstorms into structured tasks with priority, due date, and acceptance checklists.
+- **Agile User Story Architect**: Rewrites brief task descriptions into full Scrum user stories (`As a... I want... So that...`) with concrete acceptance criteria.
+- **AI Kanban Project Architect**: Generates tailored Kanban workflow columns and populated starter task cards from a project brief.
+- **AI Daily Standup Auto-Draft**: Analyzes completed, in-progress, and overdue tasks to auto-generate daily standup updates and mood indicators.
+- **AI Workspace Productivity Insights**: Analyzes team velocity, workload distribution, and potential bottlenecks.
+- **Multi-Model Fallback Cascade**: Automatic failover chain (`gemini-flash-lite-latest` → `gemini-flash-latest` → `gemini-3.5-flash-lite` → `gemini-pro-latest`) ensuring uninterrupted uptime under high demand.
 
-- **Real-time Collaboration**
-  - Live updates across all connected users
-  - Presence indicators (who's viewing/editing)
-  - Real-time comments and mentions
-  - Instant notifications
+### 3. 👥 Team Sync Hub (`/sync`)
+- **Daily Asynchronous Standups**: Log *Yesterday's achievements*, *Today's commitments*, and *Blockers*.
+- **Team Sentiment & Mood Radar**: Track real-time team morale (`🚀 On fire`, `⚡ Productive`, `🧘 Steady`, `⚠️ Struggling`, `🛑 Blocked`).
+- **Interactive Sprint Retrospectives**: Collaborative boards for `What Went Well`, `What Can Be Improved`, and `Action Items` with live upvoting.
+- **Live Reaction Stream**: Socket.io real-time emoji reactions on standup check-ins.
 
-- **File Management**
-  - Local file upload system
-  - Multiple file type support
-  - File attachments on tasks
-  - Organized storage by date
+### 4. 🗺️ Roadmap & OKR Milestone Tracking (`/roadmap`)
+- **Strategic Timeline Roadmap**: Visual phase-based milestone tracking (`Discovery`, `Design`, `Development`, `Testing`, `Launch`) with progress percentages and target dates.
+- **Quarterly OKR Goals**: Set strategic, product, engineering, and operational objectives with quantitative key results and progress bars.
+- **Filter by Project & Workspace**: Slice roadmap views across portfolio workspaces and individual projects.
 
-- **Notifications**
-  - In-app notifications
-  - Mock email service (ready for production email integration)
-  - Customizable notification preferences
+### 5. 📋 Advanced Kanban & Task Management
+- **Interactive Drag-and-Drop**: Fluid drag-and-drop boards powered by `@dnd-kit`.
+- **Multi-View Navigation**: Kanban board, Task list, and Calendar schedule views.
+- **Task Metadata**: Custom fields, subtask checklists, labels, file attachments, and dependencies (`blocks`, `is-blocked-by`, `relates-to`).
+- **Real-Time Collaboration**: Live presence indicators, card movement broadcasts, and instant comment threads powered by Socket.io.
 
-- **Analytics & Reporting**
-  - Activity logs and audit trails
-  - Task completion metrics
-  - Team productivity insights
-
-- **UI/UX Excellence**
-  - Modern, clean corporate design
-  - Dark mode and light mode support
-  - Fully responsive (mobile, tablet, desktop)
-  - Smooth animations and transitions
-  - Toast notifications
-  - Loading states and skeletons
+---
 
 ## 🛠️ Tech Stack
 
 ### Backend
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: MongoDB with Mongoose ODM
-- **Authentication**: JWT, Passport.js (Google OAuth, GitHub OAuth)
-- **Real-time**: Socket.io
-- **File Upload**: Multer
-- **Security**: Helmet, CORS, Rate Limiting, bcryptjs
-- **Validation**: express-validator
+- **Runtime**: Node.js 20+
+- **Framework**: Express.js 4.x
+- **Database**: MongoDB 7+ / MongoDB Atlas with Mongoose 8 ODM
+- **Authentication**: Firebase Admin SDK (`firebase-admin`), JWT (`jsonwebtoken`), bcryptjs
+- **Artificial Intelligence**: Google Generative AI SDK (`@google/generative-ai`)
+- **Real-Time Engine**: Socket.io 4.x
+- **Security & Utilities**: Helmet, CORS, Express Rate Limit, Cookie-Parser, Multer
 
 ### Frontend
 - **Framework**: React 18
-- **Styling**: Tailwind CSS
-- **State Management**: Context API
+- **Styling**: Tailwind CSS, Headless UI, Heroicons, Lucide React
+- **Authentication**: Firebase Client SDK (`firebase/app`, `firebase/auth`)
 - **Routing**: React Router v6
-- **HTTP Client**: Axios
-- **Real-time**: Socket.io-client
-- **UI Components**: Headless UI, Heroicons
-- **Drag & Drop**: @dnd-kit
+- **Drag & Drop**: `@dnd-kit/core`, `@dnd-kit/sortable`
+- **Real-Time**: Socket.io-client
+- **HTTP Client**: Axios with automated token refresh interceptors
 - **Notifications**: react-hot-toast
-- **Date Handling**: date-fns
-- **Charts**: Chart.js, react-chartjs-2
+
+---
 
 ## 📦 Installation & Setup
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB (v5 or higher)
-- npm or yarn
+- **Node.js** (v18 or higher)
+- **MongoDB** (Local instance or MongoDB Atlas cluster connection string)
+- **Firebase Project** (With Google Sign-In and Email/Password enabled)
+- **Google Gemini API Key** ([Google AI Studio](https://aistudio.google.com/))
+
+---
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
-cd TaskFlowTaskManagementApp
+git clone https://github.com/your-username/TaskFlow-ProjectManagementApp.git
+cd TaskFlow-ProjectManagementApp
 ```
+
+---
 
 ### 2. Backend Setup
 
@@ -103,344 +88,165 @@ cd backend
 # Install dependencies
 npm install
 
-# Create .env file
+# Configure environment variables
 cp .env.example .env
-
-# Edit .env file with your configuration
-nano .env
 ```
 
-**Configure environment variables in `.env`:**
+**Configure `backend/.env`:**
 ```env
 # Server Configuration
 NODE_ENV=development
-PORT=5000
+PORT=5001
 CLIENT_URL=http://localhost:3000
 
-# Database
-MONGODB_URI=mongodb://localhost:27017/taskflow
+# Database Configuration (MongoDB Atlas or Local)
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/taskflow?retryWrites=true&w=majority
 
-# JWT Secrets (Generate secure random strings)
-JWT_SECRET=your_super_secret_jwt_key_here
-JWT_REFRESH_SECRET=your_refresh_secret_here
+# JWT Secrets
+JWT_SECRET=your_super_secret_jwt_key
+JWT_REFRESH_SECRET=your_refresh_secret_key
 JWT_EXPIRE=7d
 JWT_REFRESH_EXPIRE=30d
 
-# OAuth - Google (Optional)
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-GOOGLE_CALLBACK_URL=http://localhost:5000/api/auth/google/callback
+# Google Gemini AI
+GEMINI_API_KEY=your_gemini_api_key_here
 
-# OAuth - GitHub (Optional)
-GITHUB_CLIENT_ID=your_github_client_id
-GITHUB_CLIENT_SECRET=your_github_client_secret
-GITHUB_CALLBACK_URL=http://localhost:5000/api/auth/github/callback
+# Firebase Admin SDK Configuration
+FIREBASE_PROJECT_ID=your_firebase_project_id
+FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xxx@your_firebase_project_id.iam.gserviceaccount.com
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYOUR_KEY_HERE\n-----END PRIVATE KEY-----\n"
 
-# Session Secret
-SESSION_SECRET=your_session_secret_here
-
-# File Upload
+# File Uploads
 MAX_FILE_SIZE=10485760
 UPLOAD_DIR=./uploads
 ```
 
-**Start MongoDB:**
+#### Database Initialization
 ```bash
-# If using local MongoDB
-mongod
-
-# Or use MongoDB Atlas (cloud) by updating MONGODB_URI in .env
+# Push all Mongoose schemas and build compound/text indexes in Atlas:
+npm run db:init
 ```
 
-**Run the backend server:**
+#### Start Backend
 ```bash
-# Development mode with auto-restart
+# Development mode with nodemon
 npm run dev
 
 # Production mode
 npm start
 ```
+The backend API and WebSocket server will run at `http://localhost:5001`.
 
-The backend API will be available at `http://localhost:5000`
+---
 
 ### 3. Frontend Setup
 
 ```bash
-cd frontend
+cd ../frontend
 
 # Install dependencies
 npm install
 
-# Create .env file
-echo "REACT_APP_API_URL=http://localhost:5000/api" > .env
-echo "REACT_APP_SOCKET_URL=http://localhost:5000" >> .env
-
-# Start the development server
-npm start
+# Configure environment variables
+cp .env.example .env
 ```
 
-The frontend will be available at `http://localhost:3000`
-
-## 🔧 Configuration
-
-### OAuth Setup (Optional)
-
-#### Google OAuth
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create a new project or select existing one
-3. Enable Google+ API
-4. Create OAuth 2.0 credentials
-5. Add authorized redirect URI: `http://localhost:5000/api/auth/google/callback`
-6. Copy Client ID and Client Secret to `.env`
-
-#### GitHub OAuth
-1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
-2. Create new OAuth App
-3. Set Authorization callback URL: `http://localhost:5000/api/auth/github/callback`
-4. Copy Client ID and Client Secret to `.env`
-
-### Email Service (Production)
-
-For production, replace the mock email service with a real provider:
-
-**Option 1: SendGrid**
-```bash
-npm install @sendgrid/mail
-```
-
-**Option 2: Resend**
-```bash
-npm install resend
-```
-
-Update `backend/utils/emailService.js` with your chosen provider.
-
-### Cloudinary Setup (Production File Storage)
-
-1. Sign up at [Cloudinary](https://cloudinary.com)
-2. Get your credentials from dashboard
-3. Add to `.env`:
+**Configure `frontend/.env`:**
 ```env
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-```
-4. Update file upload middleware to use Cloudinary SDK
+REACT_APP_API_URL=http://localhost:5001/api
+REACT_APP_SOCKET_URL=http://localhost:5001
 
-## 📁 Project Structure
-
-```
-taskflow/
-├── backend/
-│   ├── config/
-│   │   ├── database.js         # MongoDB ***
-│   │   └── passport.js         # Passport strategies
-│   ├── controllers/
-│   │   ├── authController.js   # Authentication logic
-│   │   └── taskController.js   # Task CRUD operations
-│   ├── models/
-│   │   ├── User.js             # User schema
-│   │   ├── Workspace.js        # Workspace schema
-│   │   ├── Project.js          # Project schema
-│   │   ├── Task.js             # Task schema
-│   │   ├── Comment.js          # Comment schema
-│   │   ├── Notification.js     # Notification schema
-│   │   ├── ActivityLog.js      # Activity log schema
-│   │   └── Template.js         # Template schema
-│   ├── routes/
-│   │   ├── authRoutes.js       # Auth endpoints
-│   │   └── taskRoutes.js       # Task endpoints
-│   ├── middleware/
-│   │   ├── auth.js             # JWT verification
-│   │   ├── errorHandler.js     # Global error handling
-│   │   ├── validation.js       # Input validation
-│   │   └── upload.js           # File upload handling
-│   ├── socket/
-│   │   └── index.js            # Socket.io configuration
-│   ├── utils/
-│   │   ├── tokenUtils.js       # JWT helpers
-│   │   └── emailService.js     # Email sending
-│   ├── uploads/                # File storage directory
-│   ├── .env.example            # Environment template
-│   ├── package.json
-│   └── server.js               # Main server file
-1   ├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/         # Reusable UI components
-│   │   ├── pages/
-│   │   │   ├── LandingPage.js  # Home page
-│   │   │   ├── Login.js        # Login page
-│   │   │   ├── Register.js     # Registration
-│   │   │   ├── Dashboard.js    # Main dashboard
-│   │   │   ├── KanbanBoard.js  # Kanban view
-│   │   │   └── NotFound.js     # 404 page
-│   │   ├── context/
-│   │   │   ├── AuthContext.js  # Authentication state
-│   │   │   ├── ThemeContext.js # Theme management
-│   │   │   └── SocketContext.js# Socket.io ***
-│   │   ├── services/
-│   │   │   └── api.js          # API client & endpoints
-│   │   ├── styles/
-│   │   │   └── index.css       # Global styles
-│   │   ├── App.js              # Main app component
-│   │   └── index.js            # Entry point
-│   ├── tailwind.config.js      # Tailwind configuration
-│   └── package.json
-└── README.md
+# Firebase Client Web Configuration
+REACT_APP_FIREBASE_API_KEY=AIzaSy...
+REACT_APP_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+REACT_APP_FIREBASE_PROJECT_ID=your_project
+REACT_APP_FIREBASE_STORAGE_BUCKET=your_project.firebasestorage.app
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=1035499687556
+REACT_APP_FIREBASE_APP_ID=1:1035499687556:web:...
 ```
 
-## 🎯 API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `POST /api/auth/logout` - Logout user
-- `POST /api/auth/refresh-token` - Refresh access token
-- `GET /api/auth/me` - Get current user
-- `PUT /api/auth/profile` - Update profile
-- `PUT /api/auth/change-password` - Change password
-- `POST /api/auth/forgot-password` - Request password reset
-- `PUT /api/auth/reset-password/:token` - Reset password
-- `GET /api/auth/verify-email/:token` - Verify email
-- `GET /api/auth/google` - Google OAuth
-- `GET /api/auth/github` - GitHub OAuth
-
-### Tasks
-- `GET /api/tasks` - Get all tasks (with filters)
-- `GET /api/tasks/:id` - Get single task
-- `POST /api/tasks` - Create task
-- `PUT /api/tasks/:id` - Update task
-- `DELETE /api/tasks/:id` - Delete task
-- `PUT /api/tasks/:id/move` - Move task (drag & drop)
-- `POST /api/tasks/:id/attachments` - Upload attachment
-
-### Health Check
-- `GET /api/health` - Server health status
-- `GET /api/socket/status` - Active socket ***s
-
-## 🔐 Security Features
-
-- **JWT Authentication** with access and refresh tokens
-- **Password Hashing** using bcryptjs
-- **Input Validation** with express-validator
-- **Rate Limiting** to prevent brute-force attacks
-- **Helmet.js** for security headers
-- **CORS** configuration
-- **XSS Protection** via input sanitization
-- **SQL/NoSQL Injection** prevention via Mongoose
-- **File Upload Validation** (type, size, extension)
-
-## 🚦 Running in Production
-
-### Backend Deployment
-
+#### Start Frontend
 ```bash
-cd backend
-
-# Set environment to production
-export NODE_ENV=production
-
-# Install only production dependencies
-npm install --production
-
-# Start server
 npm start
 ```
-
-**Or use PM2 for process management:**
-```bash
-npm install -g pm2
-pm2 start server.js --name taskflow-api
-pm2 save
-pm2 startup
-```
-
-### Frontend Deployment
-
-```bash
-cd frontend
-
-# Build for production
-npm run build
-
-# Serve with a static server
-npx serve -s build
-```
-
-**Or deploy to:**
-- Vercel
-- Netlify
-- AWS S3 + CloudFront
-- Heroku
-
-### Database
-
-For production, use:
-- MongoDB Atlas (managed cloud database)
-- AWS DocumentDB
-- Self-hosted MongoDB with replica sets
-
-## 📝 Environment Variables
-
-### Required
-- `MONGODB_URI` - Database *** string
-- `JWT_SECRET` - JWT signing secret
-- `JWT_REFRESH_SECRET` - Refresh token secret
-
-### Optional
-- `GOOGLE_CLIENT_ID` - For Google OAuth
-- `GITHUB_CLIENT_ID` - For GitHub OAuth
-- `CLOUDINARY_*` - For cloud file storage
-
-## 🧪 Testing
-
-```bash
-# Backend tests
-cd backend
-npm test
-
-# Frontend tests
-cd frontend
-npm test
-```
-
-## 📊 Database Schema
-
-### Collections
-1. **users** - User accounts and authentication
-2. **workspaces** - Team workspaces
-3. **projects** - Projects within workspaces
-4. **tasks** - Individual tasks/cards
-5. **comments** - Task comments
-6. **notifications** - User notifications
-7. **activitylogs** - Audit trail
-8. **templates** - Project and task templates
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 👥 Support
-
-For support, email support@taskflow.com or open an issue in the repository.
-
-## 🎉 Acknowledgments
-
-- Built with modern best practices
-- Inspired by Trello, Asana, and Notion
-- Uses industry-standard security measures
+The frontend web application will launch at `http://localhost:3000`.
 
 ---
 
-**Happy Task Managing! 🚀**
+## 📁 Project Architecture
+
+```
+TaskFlow/
+├── backend/
+│   ├── config/
+│   │   ├── database.js          # MongoDB connection with DNS fallback
+│   │   └── firebase.js          # Firebase Admin SDK initialization
+│   ├── controllers/
+│   │   ├── authController.js    # Firebase token exchange & JWT issuance
+│   │   ├── aiController.js      # Gemini AI prompt handlers
+│   │   ├── syncController.js    # Team standups & retrospective items
+│   │   ├── roadmapController.js # Milestones & quarterly OKRs
+│   │   ├── taskController.js    # Task CRUD & drag-drop ordering
+│   │   ├── projectController.js # Project & Kanban column management
+│   │   └── workspaceController.js
+│   ├── models/
+│   │   ├── User.js              # User model with Firebase UID
+│   │   ├── Workspace.js         # Workspace model
+│   │   ├── Project.js           # Project model with columns
+│   │   ├── Task.js              # Task model with subtasks & risk score
+│   │   ├── Sprint.js            # Scrum sprint tracking
+│   │   ├── Standup.js           # Daily standup logs & mood
+│   │   ├── Milestone.js         # Roadmap phases & target dates
+│   │   ├── Goal.js              # Strategic OKRs & key results
+│   │   └── RetroItem.js         # Retrospective feedback cards
+│   ├── routes/
+│   │   ├── authRoutes.js        # Auth & Firebase callback endpoints
+│   │   ├── aiRoutes.js          # Gemini AI endpoints
+│   │   ├── syncRoutes.js        # Standups & retros endpoints
+│   │   ├── roadmapRoutes.js     # Roadmap & OKR endpoints
+│   │   └── taskRoutes.js
+│   ├── scripts/
+│   │   └── initDatabase.js      # Database schema initialization & index sync
+│   ├── services/
+│   │   └── aiService.js         # Gemini API client with fallback cascade
+│   ├── socket/                  # Real-time WebSocket event dispatchers
+│   └── server.js                # Express app entrypoint
+│
+└── frontend/
+    ├── src/
+    │   ├── components/
+    │   │   ├── AITaskGeneratorModal.js # Notes to tasks generator
+    │   │   ├── CreateProjectModal.js   # AI Kanban project architect
+    │   │   ├── TaskModal.js            # Task details & user story enhancer
+    │   │   ├── Navbar.js
+    │   │   └── Sidebar.js
+    │   ├── config/
+    │   │   └── firebase.js             # Firebase client SDK initialization
+    │   ├── context/
+    │   │   ├── AuthContext.js          # Firebase auth & session management
+    │   │   ├── SocketContext.js        # WebSocket event listeners
+    │   │   └── ThemeContext.js         # Dark / Light theme toggle
+    │   ├── pages/
+    │   │   ├── Dashboard.js            # Main dashboard overview
+    │   │   ├── KanbanBoard.js          # Drag-and-drop Kanban view
+    │   │   ├── SyncHub.js              # Daily standups & sprint retrospectives
+    │   │   ├── RoadmapView.js          # Interactive roadmaps & OKR milestones
+    │   │   ├── CalendarView.js         # Task calendar schedule
+    │   │   └── TasksView.js            # Global tabular tasks view
+    │   └── services/
+    │       └── api.js                  # Axios HTTP client with interceptors
+```
+
+---
+
+## 🔒 Security Best Practices
+- **No Stored Plaintext Passwords**: Passwords hashed with `bcryptjs` (salt rounds: 10).
+- **HTTP-Only Cookies**: Refresh tokens are isolated from JavaScript execution to prevent XSS exfiltration.
+- **CORS Allowlist**: Cross-origin requests restricted to explicitly designated frontend domains.
+- **Security Headers**: Secured with `helmet` for CSP, X-Frame-Options, and HSTS.
+- **Rate Limiting**: Protected against brute-force and DDoS attempts using `express-rate-limit`.
+
+---
+
+## 📄 License
+This project is licensed under the [MIT License](LICENSE).
