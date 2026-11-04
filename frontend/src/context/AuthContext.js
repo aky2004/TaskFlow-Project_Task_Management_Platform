@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { authAPI } from '../services/api';
+import { signInWithGoogle } from '../config/firebase';
 import toast from 'react-hot-toast';
 
 const AuthContext = createContext();
@@ -81,6 +82,41 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loginWithGoogle = async () => {
+    try {
+      setLoading(true);
+      const userCredential = await signInWithGoogle();
+      const idToken = await userCredential.user.getIdToken();
+
+      // Send Firebase ID token to our backend
+      const response = await authAPI.firebaseGoogleLogin({ idToken });
+      const { user, accessToken, refreshToken } = response.data;
+
+      // Save to sessionStorage
+      sessionStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('refreshToken', refreshToken);
+      sessionStorage.setItem('user', JSON.stringify(user));
+
+      setUser(user);
+      toast.success(`Welcome, ${user.name}! 👋`);
+      return { success: true };
+    } catch (error) {
+      console.error('Firebase Google sign-in failed:', error);
+      // Don't show toast if user closed the popup
+      if (error.code === 'auth/popup-closed-by-user') {
+        return { success: false, error: 'Sign-in cancelled' };
+      }
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        'Google sign-in failed. Please try again.';
+      toast.error(message);
+      return { success: false, error: message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logout = async () => {
     try {
       const refreshToken = sessionStorage.getItem('refreshToken');
@@ -132,6 +168,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     register,
     login,
+    loginWithGoogle,
     logout,
     updateProfile,
     changePassword,

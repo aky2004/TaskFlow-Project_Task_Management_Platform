@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const User = require('../models/User');
 const { AppError } = require('../middleware/errorHandler');
 const { sendTokenResponse, verifyRefreshToken, generateAccessToken } = require('../utils/tokenUtils');
+const { auth: getFirebaseAuth, isFirebaseConfigured } = require('../config/firebase');
 const {
   sendVerificationEmail,
   sendPasswordResetEmail,
@@ -354,5 +355,85 @@ exports.changePassword = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+};
+
+/**
+ * @desc    Authenticate with Google via Firebase ID Token
+ * @route   POST /api/auth/firebase-google
+ * @access  Public
+ */
+exports.firebaseGoogleLogin = async (req, res, next) => {
+  try {
+    const { idToken } = req.body;
+
+    if (!idToken) {
+      return next(new AppError('Firebase ID token is required', 400));
+    }
+
+    if (!isFirebaseConfigured()) {
+      return next(
+        new AppError(
+          'Firebase is not yet configured on the server. Please provide FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY in backend/.env',
+          500
+        )
+      );
+    }
+
+    // Verify the Firebase ID token
+    const decodedToken = await getFirebaseAuth().verifyIdToken(idToken);
+    const { uid, email, name, picture, email_verified } = decodedToken;
+
+    if (!email) {
+      return next(new AppError('No email associated with this Google account', 400));
+    }
+
+    // Look for existing user by email or firebaseUid or googleId
+    let user = await User.findOne({
+      $or: [
+        { email: email.toLowerCase() },
+        { firebaseUid: uid },
+        { googleId: uid },
+      ],
+    });
+
+    if (user) {
+      // User exists - update identifiers & active status
+      if (!user.firebaseUid) user.firebaseUid = uid;
+      if (!user.googleId) user.googleId = uid;
+      if (!user.avatar && picture) user.avatar = picture;
+      if (email_verified && !user.emailVerified) user.emailVerified = true;
+      user.lastActive = Date.now();
+      await user.save({ validateBeforeSave: false });
+    } else {
+      // First-time sign-in: create user account
+      user = await User.create({
+        name: name || email.split('@')[0],
+        email: email.toLowerCase(),
+        firebaseUid: uid,
+        googleId: uid,
+        avatar: picture || null,
+        emailVerified: Boolean(email_verified),
+        authProvider: 'google',
+      });
+
+      // Send welcome email (fire-and-forget)
+      sendWelcomeEmail({
+        email: user.email,
+        name: user.name,
+      }).catch((err) => console.error('📧 Welcome email error:', err.message));
+    }
+
+    if (!user.isActive) {
+      return next(new AppError('Account is deactivated', 401));
+    }
+
+    // Return standard JWT token response for TaskFlow session
+    sendTokenResponse(user, 200, res, {
+      message: 'Google authentication successful',
+    });
+  } catch (error) {
+    console.error('Firebase token verification error:', error);
+    return next(new AppError(error.message || 'Invalid Firebase ID token', 401));
   }
 };
