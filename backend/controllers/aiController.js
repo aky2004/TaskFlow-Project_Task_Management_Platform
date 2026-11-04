@@ -19,18 +19,23 @@ exports.convertNotesToTasks = async (req, res) => {
   }
 };
 
-// @desc    Rewrite task to user story
+// @desc    Rewrite task to user story / enhance description
 // @route   POST /api/ai/rewrite-task
 // @access  Private
 exports.rewriteToUserStory = async (req, res) => {
   try {
-    const { description } = req.body;
-    if (!description) {
-      return res.status(400).json({ success: false, message: 'Task description is required' });
+    const { title, description } = req.body;
+    const input = description || title;
+    if (!input) {
+      return res.status(400).json({ success: false, message: 'Task title or description is required' });
     }
 
-    const userStory = await aiService.rewriteToUserStory(description);
-    res.status(200).json({ success: true, result: userStory });
+    const userStory = await aiService.rewriteToUserStory({ title, description });
+    res.status(200).json({
+      success: true,
+      result: userStory,
+      enhancedDescription: userStory,
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
