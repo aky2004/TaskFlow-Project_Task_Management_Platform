@@ -11,7 +11,8 @@ import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard';
 import KanbanBoard from './pages/KanbanBoard';
 import CalendarView from './pages/CalendarView';
-import Analytics from './pages/Analytics';
+import SyncHub from './pages/SyncHub';
+import RoadmapView from './pages/RoadmapView';
 import NewWorkspace from './pages/NewWorkspace';
 import TasksView from './pages/TasksView';
 import Profile from './pages/Profile';
@@ -129,13 +130,23 @@ function AppContent() {
           }
         />
         <Route
-          path="/analytics"
+          path="/sync"
           element={
             <ProtectedRoute>
-              <Analytics />
+              <SyncHub />
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/roadmap"
+          element={
+            <ProtectedRoute>
+              <RoadmapView />
+            </ProtectedRoute>
+          }
+        />
+        {/* Redirect legacy analytics route to SyncHub */}
+        <Route path="/analytics" element={<Navigate to="/sync" replace />} />
         <Route
           path="/profile"
           element={

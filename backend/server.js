@@ -6,13 +6,12 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 
 // Import configurations
 const connectDB = require('./config/database');
-const passport = require('./config/passport');
+require('./config/firebase');
 const initializeSocket = require('./socket');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 
@@ -30,6 +29,8 @@ const documentRoutes = require('./routes/documentRoutes');
 const aiRoutes = require('./routes/aiRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const platformUsageRoutes = require('./routes/platformUsageRoutes');
+const syncRoutes = require('./routes/syncRoutes');
+const roadmapRoutes = require('./routes/roadmapRoutes');
 
 // Initialize express app
 const app = express();
@@ -86,24 +87,6 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
-// Session middleware for passport
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || 'your-session-secret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    },
-  })
-);
-
-// Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
-
 // Logging middleware
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -146,6 +129,8 @@ app.use('/api/documents', documentRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/platform-usage', platformUsageRoutes);
+app.use('/api/sync', syncRoutes);
+app.use('/api/roadmap', roadmapRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

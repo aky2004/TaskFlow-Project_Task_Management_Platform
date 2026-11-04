@@ -21,10 +21,10 @@ import {
   PaperClipIcon,
   Squares2X2Icon,
   ArrowRightOnRectangleIcon,
-  ChartBarIcon,
   UserGroupIcon,
   TableCellsIcon,
   PaperAirplaneIcon,
+  MapIcon,
 
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
@@ -33,7 +33,7 @@ import TaskModal from '../components/TaskModal';
 import CreateTaskModal from '../components/CreateTaskModal';
 import TasksView from './TasksView';
 import CalendarView from './CalendarView';
-import Analytics from './Analytics';
+import RoadmapView from './RoadmapView';
 import { getAvatarUrl } from '../utils/avatar';
 
 import '../styles/KanbanBoard.css';
@@ -943,10 +943,17 @@ const KanbanBoard = () => {
               </span>
             </button>
 
-            <button onClick={() => setActiveView('analytics')} className={`sidebar-item-btn ${activeView === 'analytics' ? 'bg-violet-50 text-violet-600 dark:bg-violet-900/20 dark:text-violet-400' : ''}`}>
+            <button onClick={() => navigate('/sync')} className="sidebar-item-btn">
               <span className="flex items-center gap-3">
-                <ChartBarIcon className="w-4 h-4" />
-                <span>Analytics</span>
+                <ChatBubbleLeftRightIcon className="w-4 h-4 text-indigo-400" />
+                <span>Sync Hub</span>
+              </span>
+            </button>
+
+            <button onClick={() => navigate('/roadmap')} className="sidebar-item-btn">
+              <span className="flex items-center gap-3">
+                <MapIcon className="w-4 h-4 text-purple-400" />
+                <span>Roadmap & Goals</span>
               </span>
             </button>
           </div>
@@ -1058,7 +1065,7 @@ const KanbanBoard = () => {
                 <button onClick={() => setActiveView('board')} className="px-5 py-2 rounded-lg text-xs font-bold transition-colors cursor-pointer border-none" style={activeView === 'board' ? { background: '#1E1E1E', color: '#D1D1D1', boxShadow: '0 1px 2px rgba(0,0,0,0.2)' } : { background: 'transparent', color: '#828383' }}>Board</button>
                 <button onClick={() => setActiveView('tasks')} className="px-5 py-2 rounded-lg text-xs font-bold transition-colors cursor-pointer border-none" style={activeView === 'tasks' ? { background: '#1E1E1E', color: '#D1D1D1', boxShadow: '0 1px 2px rgba(0,0,0,0.2)' } : { background: 'transparent', color: '#828383' }}>Tasks</button>
                 <button onClick={() => setActiveView('calendar')} className="px-5 py-2 rounded-lg text-xs font-bold transition-colors cursor-pointer border-none" style={activeView === 'calendar' ? { background: '#1E1E1E', color: '#D1D1D1', boxShadow: '0 1px 2px rgba(0,0,0,0.2)' } : { background: 'transparent', color: '#828383' }}>Calendar</button>
-                <button onClick={() => setActiveView('analytics')} className="px-5 py-2 rounded-lg text-xs font-bold transition-colors cursor-pointer border-none" style={activeView === 'analytics' ? { background: '#1E1E1E', color: '#D1D1D1', boxShadow: '0 1px 2px rgba(0,0,0,0.2)' } : { background: 'transparent', color: '#828383' }}>Analytics</button>
+                <button onClick={() => setActiveView('roadmap')} className="px-5 py-2 rounded-lg text-xs font-bold transition-colors cursor-pointer border-none" style={activeView === 'roadmap' ? { background: '#1E1E1E', color: '#D1D1D1', boxShadow: '0 1px 2px rgba(0,0,0,0.2)' } : { background: 'transparent', color: '#828383' }}>Roadmap</button>
               </div>
 
               {/* Tools Actions */}
@@ -1134,9 +1141,9 @@ const KanbanBoard = () => {
             </div>
           )}
 
-          {activeView === 'analytics' && (
-            <div className="flex-1 min-h-0 overflow-hidden">
-              <Analytics projectId={projectId} isEmbedded={true} />
+          {activeView === 'roadmap' && (
+            <div className="flex-1 min-h-0 overflow-y-auto">
+              <RoadmapView />
             </div>
           )}
         </main>

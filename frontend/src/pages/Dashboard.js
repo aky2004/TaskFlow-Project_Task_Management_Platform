@@ -22,6 +22,8 @@ import {
   DocumentTextIcon,
   ClockIcon,
   CheckCircleIcon,
+  ChatBubbleLeftRightIcon,
+  MapIcon,
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import { SiReact, SiTailwindcss, SiNodedotjs, SiExpress, SiMongodb, SiSocketdotio } from 'react-icons/si';
@@ -738,10 +740,17 @@ const Dashboard = () => {
               </span>
             </button>
 
-            <button onClick={() => navigate('/analytics')} className="sidebar-item-btn">
+            <button onClick={() => navigate('/sync')} className="sidebar-item-btn">
               <span className="flex items-center gap-3">
-                <ChartBarIcon className="w-4 h-4" />
-                <span>Analytics</span>
+                <ChatBubbleLeftRightIcon className="w-4 h-4 text-indigo-400" />
+                <span>Sync Hub</span>
+              </span>
+            </button>
+
+            <button onClick={() => navigate('/roadmap')} className="sidebar-item-btn">
+              <span className="flex items-center gap-3">
+                <MapIcon className="w-4 h-4 text-purple-400" />
+                <span>Roadmap & Goals</span>
               </span>
             </button>
           </div>

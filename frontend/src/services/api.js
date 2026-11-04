@@ -91,6 +91,7 @@ api.interceptors.response.use(
 export const authAPI = {
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
+  firebaseGoogleLogin: (data) => api.post('/auth/firebase-google', data),
   logout: (refreshToken) => api.post('/auth/logout', { refreshToken }),
   getMe: () => api.get('/auth/me'),
   updateProfile: (data) => api.put('/auth/profile', data),
@@ -197,6 +198,31 @@ export const contactAPI = {
 export const platformUsageAPI = {
   logUsage: (data) => api.post('/platform-usage/log', data),
   getUsage: (date) => api.get('/platform-usage', { params: { date } }),
+};
+
+// Sync Hub API (Standups & Retros)
+export const syncAPI = {
+  getStandups: (params) => api.get('/sync/standups', { params }),
+  createStandup: (data) => api.post('/sync/standups', data),
+  aiGenerateStandup: (data) => api.post('/sync/standups/ai-generate', data),
+  toggleReaction: (id, emoji) => api.post(`/sync/standups/${id}/react`, { emoji }),
+  getRetros: (params) => api.get('/sync/retros', { params }),
+  createRetro: (data) => api.post('/sync/retros', data),
+  toggleVote: (id) => api.post(`/sync/retros/${id}/vote`),
+  convertToTask: (id, data) => api.post(`/sync/retros/${id}/convert-to-task`, data),
+  deleteRetro: (id) => api.delete(`/sync/retros/${id}`),
+};
+
+// Roadmap & Strategic Goals API
+export const roadmapAPI = {
+  getGoals: (params) => api.get('/roadmap/goals', { params }),
+  createGoal: (data) => api.post('/roadmap/goals', data),
+  updateGoal: (id, data) => api.put(`/roadmap/goals/${id}`, data),
+  deleteGoal: (id) => api.delete(`/roadmap/goals/${id}`),
+  getMilestones: (params) => api.get('/roadmap/milestones', { params }),
+  createMilestone: (data) => api.post('/roadmap/milestones', data),
+  updateMilestone: (id, data) => api.put(`/roadmap/milestones/${id}`, data),
+  deleteMilestone: (id) => api.delete(`/roadmap/milestones/${id}`),
 };
 
 export default api;
